@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"path/filepath"
+	"strings"
+	"testing"
+)
 
 func TestLoadConfigUsesCodexLikeDefaults(t *testing.T) {
 	t.Setenv("OPENAI_OAUTH_CLIENT_ID", "")
@@ -18,5 +22,8 @@ func TestLoadConfigUsesCodexLikeDefaults(t *testing.T) {
 	}
 	if cfg.Originator != "codex_cli" {
 		t.Fatalf("Originator = %q", cfg.Originator)
+	}
+	if !strings.HasSuffix(cfg.AuthFilePath, filepath.Join("codex-oauth-pkce", "auth.json")) {
+		t.Fatalf("AuthFilePath = %q", cfg.AuthFilePath)
 	}
 }

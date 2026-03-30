@@ -135,7 +135,7 @@ func (f *Fetcher) getJSON(ctx context.Context, path string, dst any) error {
 		return err
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
-	req.Header.Set("User-Agent", "test-openai-appssdk-client-id-fetcher")
+	req.Header.Set("User-Agent", "codex-oauth-pkce-client-id-fetcher")
 	req.Header.Set("Authorization", "Bearer "+f.Token)
 
 	client := f.Client

@@ -45,7 +45,7 @@ func defaultAuthFilePath() string {
 	if err != nil {
 		return "auth.json"
 	}
-	return filepath.Join(configDir, "test-openai-appssdk", "auth.json")
+	return filepath.Join(configDir, "codex-oauth-pkce", "auth.json")
 }
 
 func envOr(key, fallback string) string {

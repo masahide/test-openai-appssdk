@@ -1,6 +1,20 @@
-# test-openai-appssdk
+# codex-oauth-pkce
 
-`badlogic/pi-mono` の `openai-codex.ts` を参考にした、OpenAI OAuth + PKCE の Go サンプルです。
+`badlogic/pi-mono` の `openai-codex.ts` を参考にした、`codex-oauth-pkce` 向けの OpenAI OAuth + PKCE フロー実装です。
+
+## 警告
+
+この実装は実験用です。OpenAI の公開ドキュメントでは、ChatGPT/Codex 系 OAuth を外部ツールから利用する方法や、外部ツール向け `client_id` の扱いが十分に明文化されていません。
+
+そのため、このリポジトリが扱っているフローは安定した公式インターフェースとは言い切れず、運用上・規約上ともにグレーな前提を含みます。将来的な仕様変更、`client_id` 制限、リダイレクト制約の強化などで突然動かなくなる可能性があります。
+
+少なくとも以下の用途は推奨しません。
+
+- 業務システムや本番環境への組み込み
+- 商用 SaaS や複数ユーザー向けサービスでの利用
+- 長期運用を前提にした自動化の認証基盤
+
+個人検証やローカル実験の範囲で使い、利用可否やリスク判断は各自で行ってください。
 
 やっていること:
 
@@ -15,9 +29,9 @@
 
 ## 前提
 
-このサンプルは OpenAI OAuth client として動きます。Apps SDK の「自前認可サーバー」サンプルではありません。
+このリポジトリは OpenAI OAuth client として動きます。Apps SDK の「自前認可サーバー」サンプルではありません。
 
-`pi-mono` と同様の流れです。
+`pi-mono` と同様に、ローカル CLI から OpenAI OAuth 認可を完了させる構成です。
 
 1. ローカル callback サーバーを立てる
 2. OpenAI の authorize URL をブラウザで開く
@@ -41,10 +55,12 @@ export OPENAI_OAUTH_TOKEN_URL=https://auth.openai.com/oauth/token
 export OPENAI_OAUTH_REDIRECT_URL=http://localhost:1455/auth/callback
 export OPENAI_OAUTH_SCOPE="openid profile email offline_access"
 export OPENAI_OAUTH_ORIGINATOR=codex_cli
-export OPENAI_OAUTH_AUTH_FILE="$HOME/.config/test-openai-appssdk/auth.json"
+export OPENAI_OAUTH_AUTH_FILE="$HOME/.config/codex-oauth-pkce/auth.json"
 ```
 
 ## 使い方
+
+リポジトリ直下からそのまま実行できます。
 
 ログイン:
 
@@ -68,11 +84,13 @@ go run . token
 
 ## 保存先
 
-既定では `os.UserConfigDir()/test-openai-appssdk/auth.json` に保存します。`OPENAI_OAUTH_AUTH_FILE` で変更できます。
+既定では `os.UserConfigDir()/codex-oauth-pkce/auth.json` に保存します。`OPENAI_OAUTH_AUTH_FILE` で変更できます。
+
+たとえば Linux では通常 `~/.config/codex-oauth-pkce/auth.json` です。
 
 ## CLIENT_ID 取得補助
 
-`openai/codex` の GitHub code search から `CLIENT_ID` を引く補助コマンドを Go で入れています。
+`openai/codex` の GitHub code search から `CLIENT_ID` を引く補助コマンドも同梱しています。
 
 GitHub token の解決順は以下です。
 

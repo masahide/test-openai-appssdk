@@ -251,7 +251,7 @@ func testConfig() OAuthConfig {
 		TokenURL:     "https://auth.openai.com/oauth/token",
 		RedirectURL:  "http://127.0.0.1:1455/auth/callback",
 		Scope:        "openid profile email offline_access",
-		Originator:   "go-openai-oauth-sample",
+		Originator:   "codex-oauth-pkce-test",
 		HTTPClient:   http.DefaultClient,
 	}
 }
